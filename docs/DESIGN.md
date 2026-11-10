@@ -133,18 +133,27 @@ The overlay and our own system of record share one domain model and one adapter 
 
 | Phase | Scope | Success metric |
 |---|---|---|
-| 0 (8–10 wks) | Maximo connector, close-out agent (voice/text → codes, actuals, follow-ups), shadow-mode evals | ≥ 80% failure-code agreement with RE labels; close-out time down 50% |
-| 1 | Intake agent, tech copilot (offline mobile, RAG over manuals) | SR→WO triage time; wrench-time survey |
+| 0 (8–10 wks) | Read-only connector to the incumbent CMMS, **GMP WO pre-review agent**, cell + model gateway skeleton (SaaS and bare-K8s reference envs), shadow-mode evals | Pre-review flags agree with QA findings at high precision; QA review cycle time down |
+| 0b | Close-out copilot (voice/text → codes, actuals, follow-ups), Part 11 e-signature, hash-chained audit trail | Right-first-time WO documentation rate; close-out time down 50% |
+| 1 | Calibration module + OOT impact assessment; intake agent; tech copilot (offline mobile, RAG over manuals) | OOT assessment time; SR→WO triage time |
 | 2 | Planner agent + kitting check; reliability: bad actors, failure-mode clustering | Planned-work %; planner backlog/hours per WO |
 | 3 | Scheduler (CP-SAT) + PM optimization with rationale records | Schedule compliance; PM hours removed without failure increase |
 | 4 | Own system of record (replacement mode), storeroom agent | First full-replacement site |
 
-## 7. Open questions (need your industry input)
+## 7. Decisions log
 
-1. **Target segment:** asset-heavy regulated (utilities, O&G, pharma) or mid-market manufacturing / facilities? This drives compliance scope (NERC CIP, 21 CFR Part 11, PSM) and whether the overlay or replacement mode comes first.
-2. **Wedge:** is close-out the right first loop, or is planner productivity the stronger budget line in your experience?
-3. **Failure taxonomy:** align with ISO 14224 out of the box, or learn from each customer's existing Maximo hierarchy?
-4. **Maximo integration depth:** MAS 8/9 only, or must we support 7.6.x (MIF/OSLC differences, on-prem)?
-5. **Deployment:** SaaS multi-tenant vs. customer VPC / on-prem / air-gapped (which affects model hosting choices).
-6. **Mobile:** build our own offline app, or integrate with Maximo Mobile first?
-7. **APM overlap:** where should we stop: own condition monitoring/ML anomaly detection, or ingest alerts from Maximo Health/Predict, AVEVA, SparkCognition, etc.?
+| # | Decision | Detail |
+|---|---|---|
+| D1 | **Target segment: life sciences** (pharma, biotech, CDMO, med device) | See [GXP.md](GXP.md). GxP drives the AI classification rule, e-signatures, and validated release trains |
+| D2 | **Cloud-native first, with an isolated deployment option** from day one | See [DEPLOYMENT.md](DEPLOYMENT.md). Cell-based architecture, minimal dependencies, model gateway with hosted and self-hosted providers |
+| D3 | **Wedge revised: GMP WO pre-review + closeout copilot** | Read-only on the incumbent system of record at first, which keeps validation burden low and targets the QA review bottleneck |
+
+## 8. Open questions
+
+1. **Incumbents at target customers:** mostly Maximo, SAP PM, or Blue Mountain RAM? This decides which connector we build first.
+2. **Customer size:** big pharma (overlay on validated Maximo/SAP, long sales cycle) or biotech/CDMO (greenfield replacement more likely, faster)?
+3. **Calibration:** in scope for the first release, or the second module after pre-review?
+4. **QMS integration priority:** Veeva Vault QMS, TrackWise Digital, or MasterControl?
+5. **Failure taxonomy:** ISO 14224 baseline, or learn from each customer's hierarchy?
+6. **Mobile:** our own offline app from the start, or integrate with existing mobile tools first?
+7. **APM overlap:** our own condition monitoring, or ingest alerts from existing APM/EMS/BMS?
