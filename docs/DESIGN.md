@@ -122,10 +122,10 @@ Policy is configured per site, asset criticality, and action type, and every rul
 
 ## 5. Migration & coexistence with Maximo
 
-Most target customers already run Maximo or SAP, and nobody rips out an EAM quickly. Two entry modes:
+Two entry modes. **For biotech (D4) replacement comes first**; the overlay is kept for larger customers later.
 
-1. **Overlay (recommended wedge):** Maximo stays the system of record. We sync assets, locations, WOs, job plans, and the failure hierarchy through OSLC/REST. Agents write back through the Maximo APIs (as proposals → approved → posted). Value in weeks, with no migration.
-2. **Replacement:** for mid-market sites, greenfield sites, or customers leaving Maximo 7.6 instead of upgrading to MAS. The same agent layer runs on our own data plane.
+1. **Overlay (later, for large pharma):** Maximo stays the system of record. We sync assets, locations, WOs, job plans, and the failure hierarchy through OSLC/REST. Agents write back through the Maximo APIs (as proposals → approved → posted). Value in weeks, with no migration.
+2. **Replacement (launch mode):** for biotech, greenfield sites, or customers leaving a legacy tool. The same agent layer runs on our own data plane.
 
 The overlay and our own system of record share one domain model and one adapter interface, so a customer can move from overlay to replacement site by site.
 
@@ -137,7 +137,7 @@ The overlay and our own system of record share one domain model and one adapter 
 | 1 | OOT impact assessment, intake agent, tech copilot (RAG over manuals), inspection-readiness pack | OOT assessment time; time to answer inspector requests |
 | 2 | Planner agent + kitting check; reliability: bad actors, failure-mode clustering | Planned-work %; planner backlog/hours per WO |
 | 3 | Scheduler (CP-SAT) + PM optimization with rationale records | Schedule compliance; PM hours removed without failure increase |
-| 4 | Own system of record (replacement mode), storeroom agent | First full-replacement site |
+| 4 | Overlay connector (Maximo / SAP PM) for larger customers, storeroom agent | First overlay customer |
 
 ## 7. Decisions log
 
