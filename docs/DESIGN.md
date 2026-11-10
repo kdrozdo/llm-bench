@@ -133,9 +133,8 @@ The overlay and our own system of record share one domain model and one adapter 
 
 | Phase | Scope | Success metric |
 |---|---|---|
-| 0 (8–10 wks) | Read-only connector to the incumbent CMMS, **GMP WO pre-review agent**, cell + model gateway skeleton (SaaS and bare-K8s reference envs), shadow-mode evals | Pre-review flags agree with QA findings at high precision; QA review cycle time down |
-| 0b | Close-out copilot (voice/text → codes, actuals, follow-ups), Part 11 e-signature, hash-chained audit trail | Right-first-time WO documentation rate; close-out time down 50% |
-| 1 | Calibration module + OOT impact assessment; intake agent; tech copilot (offline mobile, RAG over manuals) | OOT assessment time; SR→WO triage time |
+| 0 (MVP, roughly 4–6 months, small team) | Core system of record (Location/Asset, WO, PM, Job Plan, **Calibration**), Part 11 e-signature, hash-chained audit trail, controlled master data; **onboarding agent** (documents → asset register, PM/cal plan); **vendor cal-certificate ingestion**; close-out copilot; GMP pre-review; offline mobile; shared validated cell + model gateway | Time from contract to go-live (target: weeks); right-first-time WO rate; QA review cycle time |
+| 1 | OOT impact assessment, intake agent, tech copilot (RAG over manuals), inspection-readiness pack | OOT assessment time; time to answer inspector requests |
 | 2 | Planner agent + kitting check; reliability: bad actors, failure-mode clustering | Planned-work %; planner backlog/hours per WO |
 | 3 | Scheduler (CP-SAT) + PM optimization with rationale records | Schedule compliance; PM hours removed without failure increase |
 | 4 | Own system of record (replacement mode), storeroom agent | First full-replacement site |
@@ -146,14 +145,15 @@ The overlay and our own system of record share one domain model and one adapter 
 |---|---|---|
 | D1 | **Target segment: life sciences** (pharma, biotech, CDMO, med device) | See [GXP.md](GXP.md). GxP drives the AI classification rule, e-signatures, and validated release trains |
 | D2 | **Cloud-native first, with an isolated deployment option** from day one | See [DEPLOYMENT.md](DEPLOYMENT.md). Cell-based architecture, minimal dependencies, model gateway with hosted and self-hosted providers |
-| D3 | **Wedge revised: GMP WO pre-review + closeout copilot** | Read-only on the incumbent system of record at first, which keeps validation burden low and targets the QA review bottleneck |
+| D3 | ~~Wedge: GMP WO pre-review on top of the incumbent system~~ | Superseded by D6 |
+| D4 | **Customer segment: biotech** (clinical → commercial, small or mid-size, 1–5 sites) | Greenfield or a weak incumbent (spreadsheets, a generic CMMS, a legacy validated tool). We are the **system of record from day one**: the replacement mode in §5 comes first, and the Maximo overlay is deprioritized |
+| D5 | **QMS integration deferred** | Deviation, CAPA, and change-control references are stored as typed external IDs and links on the WO/asset. No integration in v1. Our own change control covers CMMS master data only |
+| D6 | **Wedge: GxP-ready CMMS that onboards itself** | See [GXP.md §5](GXP.md#5-wedge-for-biotech). AI builds the asset register, PM plan, and calibration plan from the customer's existing documents. Close-out copilot and GMP pre-review are built into the product. Shared SaaS cell on the validated release train is the default; isolated deployment stays an architectural guarantee, not a launch priority |
 
 ## 8. Open questions
 
-1. **Incumbents at target customers:** mostly Maximo, SAP PM, or Blue Mountain RAM? This decides which connector we build first.
-2. **Customer size:** big pharma (overlay on validated Maximo/SAP, long sales cycle) or biotech/CDMO (greenfield replacement more likely, faster)?
-3. **Calibration:** in scope for the first release, or the second module after pre-review?
-4. **QMS integration priority:** Veeva Vault QMS, TrackWise Digital, or MasterControl?
-5. **Failure taxonomy:** ISO 14224 baseline, or learn from each customer's hierarchy?
-6. **Mobile:** our own offline app from the start, or integrate with existing mobile tools first?
-7. **APM overlap:** our own condition monitoring, or ingest alerts from existing APM/EMS/BMS?
+1. **Calibration depth:** biotech has many lab instruments and usually outsourced calibration vendors. Calibration in v1 (recommended), or v2?
+2. **Data we onboard from:** what do biotech customers actually have? Spreadsheets, IQ/OQ PDFs, vendor cal certs, exports from a generic CMMS, or Blue Mountain?
+3. **Failure taxonomy:** ISO 14224 baseline (for equipment, plus a simplified lab-instrument set), or start minimal?
+4. **Mobile:** our own offline app from the start? (Recommended: yes, since we are the system of record.)
+5. **Monitoring signals:** ingest EMS/BMS alarms in v1, or later?

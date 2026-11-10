@@ -15,6 +15,8 @@ Goal: **one codebase and one set of artifacts** run as multi-tenant SaaS and as 
 | 3 | **Customer-hosted** (their cloud account / VPC, Kubernetes) | Customer, or us under contract | Pharma with strict cloud policy |
 | 4 | **Air-gapped / on-prem** | Customer | Sites with no egress, some government/defense-adjacent manufacturing |
 
+**Priority for the biotech segment (D4):** topology 1 on the validated release train is the default and launch target. Topologies 2–4 stay *architecturally guaranteed* (CI keeps the bare-Kubernetes reference environment green) but are sold on demand.
+
 ## 2. Cell-based architecture
 
 A **cell** is a complete, independent stack: the app services, a Postgres cluster, object storage, the model gateway, and workers. Tenants are placed into cells.

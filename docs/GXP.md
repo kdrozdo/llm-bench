@@ -45,7 +45,7 @@ Hard rules:
   - **OOT impact assessment**: which batches, tests, or products used the instrument since its last good calibration. The agent assembles the evidence; QA decides
 - **Electronic equipment logbooks** (use, cleaning, maintenance, status). These are paper in most plants and are a constant source of inspection findings.
 - **Controlled master data:** GMP job plans, PMs, cal procedures, and tolerances are versioned, have effective dates, and change only through change control with e-signature.
-- **QMS linkage:** deviation, CAPA, and change-control references on WOs. Integration with Veeva Vault QMS, TrackWise Digital, MasterControl. Agents *draft* a deviation initiation; the QMS stays the system of record for quality events.
+- **QMS references (integration deferred, see D5):** deviation, CAPA, and change-control numbers are stored as typed external references with links on WOs, cal records, and assets. The agent can *suggest* that a deviation is likely needed (e.g. OOT on a GMP instrument), but raising it happens in the customer's QMS. Integrations (Veeva, TrackWise, MasterControl) come later, behind the same reference type.
 - **Environmental & utilities signals:** EMS/BMS alarms (cleanroom ΔP, temperature/RH, WFI conductivity/TOC) as condition triggers.
 
 ## 4. Where AI earns its keep in life sciences
@@ -61,14 +61,26 @@ Hard rules:
 | Scheduling around campaigns, cleaning, and room status | N | Maintenance windows aligned with production campaigns |
 | Spares / storeroom | N | Critical spares for GMP-critical assets |
 
-## 5. Revised wedge
+## 5. Wedge for biotech
 
-**GMP work-order pre-review plus a closeout copilot.**
+**Biotech profile:**
+- small maintenance/metrology teams, often 1–10 people per site
+- many lab instruments plus a GMP manufacturing suite and utilities
+- calibration and PM largely **outsourced to vendors**, whose results arrive as PDFs
+- the CMMS is spreadsheets, a generic tool, or an inherited validated system nobody likes
+- the next inspection or pre-approval inspection (PAI) is the forcing event
 
-- Reading the incumbent CMMS (Maximo, SAP PM, Blue Mountain RAM) and *flagging* issues is low risk and low validation burden. We don't write to the validated system of record at first.
-- It targets a bottleneck everyone in pharma maintenance knows: QA reviewing completed GMP WOs.
-- Measurable: QA review cycle time, right-first-time documentation rate, inspection findings related to maintenance records.
-- After that, the closeout copilot raises right-first-time at the source, and calibration and OOT impact assessment follow as the next module.
+**Pitch:** a validated-ready CMMS that is live in weeks, not a 12-month implementation.
+
+1. **Self-onboarding.**
+   - What the agent reads: equipment lists and spreadsheets, IQ/OQ packages, OEM manuals, vendor cal certificates, and any existing CMMS export.
+   - What it proposes: location hierarchy, asset records with specs, GMP classification, PM plans and calibration plans (test points, tolerances, intervals) with citations to the source documents.
+   - Who signs off: the customer's SME reviews and approves in bulk, with e-signature (Assistive class). The approved set becomes controlled master data.
+2. **Vendor certificate ingestion.** A cal vendor's PDF becomes structured as-found/as-left results. A human verifies the extracted values. Pass/OOT is then computed deterministically against *our* tolerances, not the vendor's statement.
+3. **Close-out copilot and GMP pre-review** are built in, so records are right first time at the source and QA review is fast.
+4. **Inspection-readiness pack** per asset/system: one click gives the inspector the full history.
+
+Measurable: time to go-live, % of master data created by agent and accepted unchanged, right-first-time WO rate, QA review cycle time, inspection findings on maintenance/calibration records.
 
 ## 6. What we ship to customers (supplier validation package)
 
